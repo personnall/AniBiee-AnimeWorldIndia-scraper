@@ -45,14 +45,26 @@ class HttpClient {
   }
 
   async get(url, options = {}) {
+    // Automatically add Referer if not provided to bypass some Cloudflare checks
+    const headers = {
+      ...this.client.defaults.headers,
+      ...options?.headers,
+    };
+
+    if (!headers.Referer && !headers.referer) {
+      try {
+        const urlObj = new URL(url);
+        headers.Referer = `${urlObj.origin}/`;
+      } catch (e) {
+        // Fallback or ignore if invalid URL
+      }
+    }
+
     const config = {
       url,
       method: 'GET',
       timeout: options?.timeout,
-      headers: {
-        ...this.client.defaults.headers,
-        ...options?.headers,
-      },
+      headers,
     };
 
     let lastError;
@@ -92,15 +104,26 @@ class HttpClient {
   }
 
   async post(url, data, options = {}) {
+    const headers = {
+      ...this.client.defaults.headers,
+      ...options?.headers,
+    };
+
+    if (!headers.Referer && !headers.referer) {
+      try {
+        const urlObj = new URL(url);
+        headers.Referer = `${urlObj.origin}/`;
+      } catch (e) {
+        // Fallback or ignore if invalid URL
+      }
+    }
+
     const config = {
       url,
       method: 'POST',
       data,
       timeout: options?.timeout,
-      headers: {
-        ...this.client.defaults.headers,
-        ...options?.headers,
-      },
+      headers,
     };
 
     let lastError;

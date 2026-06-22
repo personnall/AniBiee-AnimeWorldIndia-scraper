@@ -107,6 +107,7 @@ class EmbedExtractor extends BaseExtractor {
         const detailUrls = [
           `${this.base.baseUrl}/series/${seriesId}/`,
           `${this.base.baseUrl}/movies/${seriesId}/`,
+          `${this.base.baseUrl}/${seriesId}/`,
         ];
 
         let lastDetailError;

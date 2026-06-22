@@ -261,6 +261,7 @@ class DetailsExtractor extends BaseExtractor {
     const urls = [
       `${this.base.baseUrl}/series/${id}/`,
       `${this.base.baseUrl}/movies/${id}/`,
+      `${this.base.baseUrl}/${id}/`,
     ];
 
     let lastError;

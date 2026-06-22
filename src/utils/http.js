@@ -67,7 +67,12 @@ class HttpClient {
     if (!headers.Referer && !headers.referer) {
       try {
         const urlObj = new URL(url);
-        headers.Referer = `${urlObj.origin}/`;
+        // Only set Referer if it's not the root domain
+        if (urlObj.pathname !== '/' && urlObj.pathname !== '') {
+            headers.Referer = `${urlObj.origin}/`;
+        } else {
+            headers.Referer = 'https://www.google.com/';
+        }
       } catch (e) {
         // Fallback or ignore if invalid URL
       }

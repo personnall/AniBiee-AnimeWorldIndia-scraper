@@ -37,7 +37,10 @@ class TypeController extends BaseController {
         });
       } catch (error) {
         logger.error('Error extracting type page data', error);
-        throw new BadRequestError('Failed to extract type page data');
+        const message = error.response?.status === 403
+          ? 'Access forbidden by source website (403)'
+          : error.message || 'Failed to extract type page data';
+        throw new BadRequestError(message);
       }
     });
   }

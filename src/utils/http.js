@@ -1,10 +1,15 @@
 const axios = require('axios');
+const { wrapper } = require('axios-cookiejar-support');
+const { CookieJar } = require('tough-cookie');
 const { logger } = require('./logger');
 
 class HttpClient {
   constructor() {
-    this.client = axios.create({
+    this.jar = new CookieJar();
+    this.client = wrapper(axios.create({
       timeout: 30000,
+      jar: this.jar,
+      withCredentials: true,
       headers: {
         'User-Agent':
           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -20,7 +25,7 @@ class HttpClient {
         'Sec-Fetch-User': '?1',
         'Upgrade-Insecure-Requests': '1',
       },
-    });
+    }));
 
     this.setupInterceptors();
   }
